@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- EXTERNAL LIBS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+    google.load('visualization', '1', { 'packages': ['map'] });
+    google.setOnLoadCallback(drawMap);
+
+    function drawMap() {
+      var data = google.visualization.arrayToDataTable([
+        ['Lat', 'Long', 'Name',],
+    [41.1373854,-81.3326704, 'my home'],
+    [41.1449967,-81.341497, 'class'],
+      ]);
+
+    var options = { showTip: true };
+
+    var map = new google.visualization.Map(document.getElementById('chart_div'));
+
+    map.draw(data, options);
+  };
+  </script>
+
+  </head>
+  <body>
+    <div id="chart_div"></div>
+  </body>
+</html>
