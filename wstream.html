@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- EXTERNAL LIBS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+
+    <!-- EXAMPLE SCRIPT -->
+    <script>
+
+      // onload callback
+      function drawChart() {
+
+        var public_key = 'aGOE6rY5mxcxX1GNnOKq';
+
+        // JSONP request
+        var jsonData = $.ajax({
+          url: 'https://data.sparkfun.com/output/' + public_key + '.json',
+          data: {page:1},
+          //data: {'gte':{'timestamp':'now - 5days'}},
+          dataType: 'jsonp',
+        }).done(function (results) {
+
+          var data = new google.visualization.DataTable();
+          data.addColumn('datetime', 'time');
+          //data.addColumn('number', 'light');
+          data.addColumn('number', 'light')
+          //data.addColumn('string', 'user');
+          data.addColumn('number', 'temperature');
+
+          $.each(results, function (i, row) {
+           data.addRow([
+              (new Date(row.timestamp)),
+              parseFloat(row.light),
+              //(row.user),
+              parseFloat(row.temperature)
+
+            ]);
+          });
+
+          var chart = new google.visualization.ScatterChart($('#chart').get(0));
+          //var chart = new google.visualization.LineChart($('#chart').get(0));
+
+          chart.draw(data, {
+            title: 'RPi Class Stream'
+          });
+
+        });
+
+      }
+
+      // load chart lib
+      google.load('visualization', '1', {
+        packages: ['corechart']
+      });
+
+      // call drawChart once google charts is loaded
+      google.setOnLoadCallback(drawChart);
+
+    </script>
+
+
+  </head>
+  <body>
+    <div id="chart" style="width: 100%;"></div>
+    <h1 align= "center"> Latest class stream</h1>
+  </body>
+</html>
